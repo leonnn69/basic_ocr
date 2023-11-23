@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Deployment</title>
+</head>
+<body>
+    <h1>Image Classification</h1>
+    <form id="upload-form">
+        <input type="file" id="file-input" accept="image/*">
+        <button type="button" onclick="predict()">Predict</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        function predict() {
+            var fileInput = document.getElementById('file-input');
+            var file = fileInput.files[0];
+
+            var formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerHTML = 'Predicted Label: ' + data.result;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
